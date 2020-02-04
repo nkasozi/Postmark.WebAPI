@@ -1,7 +1,4 @@
-﻿using Postmark.WebAPI.Models;
-using System;
-
-namespace Postmark.Shared.Interfaces
+﻿namespace Postmark.Shared.Interfaces
 {
     public interface IRule<T, TResult>
     {

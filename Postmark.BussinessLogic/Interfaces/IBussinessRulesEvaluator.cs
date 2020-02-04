@@ -1,6 +1,4 @@
-﻿using Postmark.BussinessLogic.Interfaces;
-using Postmark.Shared;
-using Postmark.Shared.Interfaces;
+﻿using Postmark.Shared.Interfaces;
 using Postmark.WebAPI.Models;
 
 namespace Postmark.BussinessLogic.Interfaces

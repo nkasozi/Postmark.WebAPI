@@ -1,6 +1,5 @@
 ﻿using Akka.Actor;
 using Postmark.WebAPI.Models;
-using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
@@ -28,7 +27,7 @@ namespace PostMark.Akka.Actors
             switch (message)
             {
                 case NotifyByEmailCmd request:
-                    Sender.Tell(ProcessSendEmailRequest(request));
+                    Task.Run(async () => await ProcessSendEmailRequest(request)).PipeTo(Sender);
                     break;
 
                 default:
@@ -102,9 +101,6 @@ namespace PostMark.Akka.Actors
                 };
             });
         }
-
-
-
         public class NotifyByEmailCmd
         {
             public EmailRequest EmailRequest { get; set; }

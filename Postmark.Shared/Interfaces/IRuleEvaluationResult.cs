@@ -1,6 +1,4 @@
-﻿using Postmark.Shared;
-
-namespace Postmark.Shared.Interfaces
+﻿namespace Postmark.Shared.Interfaces
 {
     public interface IRuleEvaluationResult<T>
     {

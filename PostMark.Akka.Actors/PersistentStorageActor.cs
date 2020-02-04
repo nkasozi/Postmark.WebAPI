@@ -1,7 +1,6 @@
 ﻿using Akka.Actor;
-using Postmark.Entities.Interface;
+using Postmark.PersistentStorage.Interface;
 using Postmark.WebAPI.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace PostMark.Akka.Actors
@@ -9,9 +8,15 @@ namespace PostMark.Akka.Actors
     public class PersistentStorageActor : BaseActor
     {
         private readonly IPersistentStorage _persistentStorage;
+       
         public PersistentStorageActor(IPersistentStorage persistentStorage)
         {
             _persistentStorage = persistentStorage;
+        }
+
+        public static Props Create(IPersistentStorage persistentStorage)
+        {
+            return Props.Create(() => new PersistentStorageActor(persistentStorage));
         }
 
         protected override void OnReceive(object message)
@@ -36,7 +41,7 @@ namespace PostMark.Akka.Actors
 
         private async Task<OpResult> ProcessSaveSentEmailCmd(SaveSentEmailCmd request)
         {
-            //
+            //TODO: save in DB
             return new OpResult
             {
                 ResultCode = OpResultCode.SUCCCESS,
@@ -46,6 +51,7 @@ namespace PostMark.Akka.Actors
 
         private async Task<OpResult> ProcessLogFailedEmailCmd(LogFailedEmailCmd request)
         {
+            //TODO: save in DB
             return new OpResult
             {
                 ResultCode = OpResultCode.SUCCCESS,

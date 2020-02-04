@@ -1,7 +1,5 @@
 ﻿using Akka.Actor;
-using Postmark.BussinessLogic;
 using Postmark.BussinessLogic.Interfaces;
-using Postmark.Shared.Interfaces;
 using Postmark.WebAPI.Models;
 using System;
 using System.Threading.Tasks;

@@ -1,14 +1,10 @@
 ﻿using Xunit;
-using PostMark.Akka.Actors;
-using System;
 using System.Collections.Generic;
-using System.Text;
 using Postmark.WebAPI.Models;
 using Akka.Actor;
 using FluentAssertions;
 using Postmark.BussinessLogic.Interfaces;
 using Postmark.BussinessLogic;
-using System.Linq;
 using AutoMapper;
 
 namespace PostMark.Akka.Actors.Tests
@@ -49,7 +45,7 @@ namespace PostMark.Akka.Actors.Tests
             answer.Message.Should().NotBeNullOrEmpty();
             answer.To.Should().NotBeNullOrEmpty();
             answer.MessageID.Should().NotBeNullOrEmpty();
-            answer.UniqueEmailID.Should().BeSameAs(ID);
+            answer.UniqueEmailID.Should().Be(ID);
         }
 
         //test bulk valid email
@@ -347,7 +343,7 @@ namespace PostMark.Akka.Actors.Tests
             answer.Message.Should().NotBeNullOrEmpty();
             answer.To.Should().NotBeNullOrEmpty();
             answer.MessageID.Should().NotBeNullOrEmpty();
-            answer.UniqueEmailID.Should().BeSameAs(ID);
+            answer.UniqueEmailID.Should().Be(ID);
         }
 
         //test bulk with many rules
@@ -367,6 +363,7 @@ namespace PostMark.Akka.Actors.Tests
 
             var unsubscribeRule = new UnsubscribeRule();
             unsubscribeRule.UnbsubscribedEmails.Add(testEmail);
+            
             var validateToEmailAddressRule = new ValidateToEmailAddressRule();
 
             IEmailBussinessRule[] emailBussinessRules =

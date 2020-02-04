@@ -5,7 +5,6 @@ namespace PostMark.Akka.Actors
 {
     public abstract class BaseActor : UntypedActor
     {
-
         protected void HandleDefault(object message, string actorType)
         {
             switch (message)

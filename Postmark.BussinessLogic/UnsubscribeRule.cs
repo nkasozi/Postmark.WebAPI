@@ -1,10 +1,7 @@
 ﻿using Postmark.BussinessLogic.Interfaces;
-using Postmark.Shared;
-using Postmark.Shared.Interfaces;
 using Postmark.WebAPI.Models;
 using System;
 using System.Collections.Generic;
-using System.Text;
 
 namespace Postmark.BussinessLogic
 {

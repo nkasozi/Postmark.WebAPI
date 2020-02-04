@@ -11,7 +11,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Postmark.BussinessLogic\Postmark.BussinessLogic.csproj" />
-    <ProjectReference Include="..\Postmark.Entities\Postmark.Entities.csproj" />
+    <ProjectReference Include="..\PostMark.PersistentStorage\PostMark.PersistentStorage.csproj" />
     <ProjectReference Include="..\Postmark.WebAPI.Models\Postmark.WebAPI.Models.csproj" />
   </ItemGroup>
 

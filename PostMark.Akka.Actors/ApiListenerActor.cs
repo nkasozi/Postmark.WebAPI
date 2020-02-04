@@ -1,6 +1,5 @@
 ﻿using Akka.Actor;
 using Postmark.WebAPI.Models;
-using System;
 using System.Threading.Tasks;
 
 namespace PostMark.Akka.Actors
@@ -12,6 +11,11 @@ namespace PostMark.Akka.Actors
         public ApiListenerActor(IActorRef BussinessLogicActor)
         {
             _bussinessLogicActor = BussinessLogicActor;
+        }
+
+        public static Props Create(IActorRef BussinessLogicActor)
+        {
+            return Props.Create(() => new ApiListenerActor(BussinessLogicActor));
         }
 
         protected override void OnReceive(object message)
