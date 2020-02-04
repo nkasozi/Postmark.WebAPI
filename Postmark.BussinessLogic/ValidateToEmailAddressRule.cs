@@ -1,6 +1,5 @@
 ﻿using Postmark.BussinessLogic.Interfaces;
 using Postmark.Shared;
-using Postmark.Shared.Interfaces;
 using Postmark.WebAPI.Models;
 using System;
 using System.Collections.Generic;
@@ -8,11 +7,9 @@ using System.Text;
 
 namespace Postmark.BussinessLogic
 {
-    public class UnsubscribeRule : IEmailBussinessRule
+    public class ValidateToEmailAddressRule : IEmailBussinessRule
     {
-        public List<string> UnbsubscribedEmails = new List<string>();
-
-        public const string ERROR_MESSAGE = "User is Unsubscribed";
+        public const string ERROR_MESSAGE = "The To Email is not Valid";
 
         public EmailResult RunRuleChecks(ref EmailRequest obj)
         {
@@ -35,9 +32,8 @@ namespace Postmark.BussinessLogic
 
         private SingleEmailResult GenerateSingleEmailResult(SingleEmail singleEmail)
         {
-            //IRuleEvaluationResult<EmailResult> ruleEvaluationResult = new EmailRuleEvaluationResult();
-
-            var singleEmailResult = checkIfAlreadyUnsubcribed(singleEmail);
+            
+            var singleEmailResult = checkTheToEmailIsValid(singleEmail);
 
             return singleEmailResult;
 
@@ -49,21 +45,22 @@ namespace Postmark.BussinessLogic
 
             foreach (var singleEmail in bulkEmail.Emails)
             {
-                var singleEmailResult = checkIfAlreadyUnsubcribed(singleEmail);
+                var singleEmailResult = checkTheToEmailIsValid(singleEmail);
 
                 bulkEmailResult.Results.Add(singleEmailResult);
-                
+
             }
 
             return bulkEmailResult;
 
         }
 
-        private SingleEmailResult checkIfAlreadyUnsubcribed(SingleEmail singleEmail)
+        private SingleEmailResult checkTheToEmailIsValid(SingleEmail singleEmail)
         {
             var emailResult = new SingleEmailResult();
-            //user unsubscribed
-            if (UnbsubscribedEmails.Contains(singleEmail.To))
+            
+           
+            if (!IsValidEmail(singleEmail.To))
             {
                 emailResult.To = singleEmail.To;
                 emailResult.Message = ERROR_MESSAGE;
@@ -80,6 +77,19 @@ namespace Postmark.BussinessLogic
             emailResult.ErrorCode = OpResultCode.SUCCCESS;
 
             return emailResult;
+        }
+
+        bool IsValidEmail(string email)
+        {
+            try
+            {
+                var addr = new System.Net.Mail.MailAddress(email);
+                return addr.Address == email;
+            }
+            catch
+            {
+                return false;
+            }
         }
     }
 }

@@ -13,7 +13,6 @@
     <ProjectReference Include="..\Postmark.BussinessLogic\Postmark.BussinessLogic.csproj" />
     <ProjectReference Include="..\Postmark.Entities\Postmark.Entities.csproj" />
     <ProjectReference Include="..\Postmark.WebAPI.Models\Postmark.WebAPI.Models.csproj" />
-    <ProjectReference Include="..\Postmark.WebAPI.ValidationLogic\Postmark.WebAPI.ValidationLogic.csproj" />
   </ItemGroup>
 
 </Project>

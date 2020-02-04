@@ -40,47 +40,36 @@ namespace Postmark.BussinessLogic
             foreach (var rule in _rules)
             {
                 //run each rules precondition check
-                var preconditionResult = rule.RunPreConditionChecks(ref request);
+                ruleEvalResult = rule.RunRuleChecks(ref request);
 
-                switch (preconditionResult.ResultCode)
+                switch (ruleEvalResult)
                 {
-                    case PreconditionResultCode.FAILED:
-                        return preconditionResult.EmailResult;
+                    case SingleEmailResult singleEmailResult:
+                        if (singleEmailResult.ErrorCode != OpResultCode.SUCCCESS)
+                            return singleEmailResult;
+                        break;
 
-                    case PreconditionResultCode.SKIP_RULE:
-                        continue;
+                    case BulkEmailResult bulkEmailResult:
 
-                    case PreconditionResultCode.SUCCESS:
-                        ruleEvalResult = rule.RunRuleChecks(ref request);
+                        //so for bulk email result we have to do some juggling
+                        //if an email in the bulk emails fails a rule check
+                        //we remove it from the remaining bulk emails on
+                        //the next rule run
+                        //basically only emails that pass a rule check can be checked by 
+                        //subsequent rule checks
 
-                        switch (ruleEvalResult)
+                        var failedResults = bulkEmailResult.Results.FindAll(i => i.ErrorCode != OpResultCode.SUCCCESS);
+                        var bulkEmailRequest = request as BulkEmail;
+
+                        request = new BulkEmail
                         {
-                            case SingleEmailResult singleEmailResult:
-                                if (singleEmailResult.ErrorCode != OpResultCode.SUCCCESS)
-                                    return singleEmailResult;
-                                break;
+                            Emails = GetRemainingEmailsThatPassedRuleCheck(failedResults, bulkEmailRequest)
+                        };
 
-                            case BulkEmailResult bulkEmailResult:
-                                
-                                //so for bulk email result we have to do some juggling
-                                //if an email in the bulk emails fails a rule check
-                                //we remove it from the remaining bulk emails on
-                                //the next rule run
-                                //basically only emails that pass a rule check can be checked by 
-                                //subsequent rule checks
+                        BulkEmails.AddRange(failedResults.ToList());
+                        break;
 
-                                var failedResults = bulkEmailResult.Results.FindAll(i => i.ErrorCode != OpResultCode.SUCCCESS);
-                                var bulkEmailRequest = request as BulkEmail;
 
-                                request = new BulkEmail
-                                {
-                                    Emails = GetRemainingEmailsThatPassedRuleCheck(failedResults, bulkEmailRequest)
-                                };
-
-                                BulkEmails.AddRange(failedResults.ToList());
-                                break;
-                        }
-                        continue;
                 }
             }
 
@@ -99,7 +88,7 @@ namespace Postmark.BussinessLogic
 
         private List<SingleEmail> GetRemainingEmailsThatPassedRuleCheck(List<SingleEmailResult> failedResults, BulkEmail bulkEmailRequest)
         {
-            
+
             foreach (var email in failedResults)
             {
                 var emailResult = bulkEmailRequest.Emails.FirstOrDefault(i => i.UniqueEmailID == email.UniqueEmailID);

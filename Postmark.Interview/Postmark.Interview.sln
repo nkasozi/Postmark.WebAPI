@@ -15,8 +15,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postmark.WebAPI.Models", ".
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postmark.Shared", "..\Postmark.Shared\Postmark.Shared.csproj", "{29A71452-E1F4-478C-B041-BA1CFEE65122}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Postmark.WebAPI.ValidationLogic", "..\Postmark.WebAPI.ValidationLogic\Postmark.WebAPI.ValidationLogic.csproj", "{F82C4482-2993-491B-A724-CB50C8ACDDFB}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PostMark.Akka.Actors.Tests", "..\PostMark.Akka.ActorsTests\PostMark.Akka.Actors.Tests.csproj", "{719683F1-E3CB-4EE4-87D3-A54B81B455B6}"
 EndProject
 Global
@@ -49,10 +47,6 @@ Global
 		{29A71452-E1F4-478C-B041-BA1CFEE65122}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{29A71452-E1F4-478C-B041-BA1CFEE65122}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{29A71452-E1F4-478C-B041-BA1CFEE65122}.Release|Any CPU.Build.0 = Release|Any CPU
-		{F82C4482-2993-491B-A724-CB50C8ACDDFB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{F82C4482-2993-491B-A724-CB50C8ACDDFB}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{F82C4482-2993-491B-A724-CB50C8ACDDFB}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{F82C4482-2993-491B-A724-CB50C8ACDDFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{719683F1-E3CB-4EE4-87D3-A54B81B455B6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{719683F1-E3CB-4EE4-87D3-A54B81B455B6}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{719683F1-E3CB-4EE4-87D3-A54B81B455B6}.Release|Any CPU.ActiveCfg = Release|Any CPU
