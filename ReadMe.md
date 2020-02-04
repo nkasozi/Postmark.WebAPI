@@ -66,6 +66,10 @@ To add bussiness rules, all thats needed is to implement the IEmailBussinessRule
 and put the logic in the RunRuleCheck Method. Remember to cater for both types of requests that 
 can be sent. Also...remember that the SingleEmailRequest expects a SingleEmailResult while the 
 BulkEmailRequest expects the BulkEmailResult.
+
+The BussinessLogic Engine will automatically send emails for which you return a 
+SingleEmailResult.ErrorCode of SUCCESS, other wise it will fail them. BulkEmailResult is just
+a collection of SingleEmailResults
 e.g
 
 ```
