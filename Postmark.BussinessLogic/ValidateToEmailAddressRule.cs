@@ -15,11 +15,11 @@ namespace Postmark.BussinessLogic
             switch (obj)
             {
                 case SingleEmail singleEmail:
-                    ruleEvaluationResult = GenerateSingleEmailResult(singleEmail);
+                    ruleEvaluationResult = RunRuleOnSingleEmail(singleEmail);
                     break;
 
                 case BulkEmail bulkEmail:
-                    ruleEvaluationResult = GenerateBulkEmailResult(bulkEmail);
+                    ruleEvaluationResult = RunRuleOnBulkEmail(bulkEmail);
                     break;
 
             }
@@ -27,7 +27,7 @@ namespace Postmark.BussinessLogic
             return ruleEvaluationResult;
         }
 
-        private SingleEmailResult GenerateSingleEmailResult(SingleEmail singleEmail)
+        private SingleEmailResult RunRuleOnSingleEmail(SingleEmail singleEmail)
         {
             
             var singleEmailResult = checkTheToEmailIsValid(singleEmail);
@@ -36,7 +36,7 @@ namespace Postmark.BussinessLogic
 
         }
 
-        private BulkEmailResult GenerateBulkEmailResult(BulkEmail bulkEmail)
+        private BulkEmailResult RunRuleOnBulkEmail(BulkEmail bulkEmail)
         {
             BulkEmailResult bulkEmailResult = new BulkEmailResult();
 

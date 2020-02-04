@@ -26,16 +26,50 @@ namespace Postmark.Interview
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllers();
+            
+            SetUpActorSystem(services);
 
+            SetupPersistentStorageActor(services);
+
+            SetupEmailSenderActor(services);
+
+            SetupBussinessLogicActor(services);
+
+            SetupApiListenerActor(services);
+        }
+
+        private static void SetUpActorSystem(IServiceCollection services)
+        {
             services.AddSingleton(_ =>
-            (
-                ActorSystem.Create
-                (
-                    "PostMarkWebAPI",
-                    ConfigurationLoader.Load()
-                )
-            ));
+                        (
+                            ActorSystem.Create
+                            (
+                                "PostMarkWebAPI",
+                                ConfigurationLoader.Load()
+                            )
+                        ));
+        }
 
+        private static void SetupApiListenerActor(IServiceCollection services)
+        {
+            services.AddSingleton<ApiListenerActorProvider>(provider =>
+            {
+                var actorSystem = provider.GetService<ActorSystem>();
+
+                var bussinessLogicActor = provider.GetService<BussinessLogicActorProvider>()();
+
+                var actor = actorSystem.ActorOf
+                (
+                    ApiListenerActor.Create(BussinessLogicActor: bussinessLogicActor),
+                    nameof(ApiListenerActor)
+                );
+
+                return () => actor;
+            });
+        }
+
+        private static void SetupPersistentStorageActor(IServiceCollection services)
+        {
             services.AddSingleton<PersistentStorageActorProvider>(provider =>
             {
                 var actorSystem = provider.GetService<ActorSystem>();
@@ -50,7 +84,10 @@ namespace Postmark.Interview
                 ); ;
                 return () => actor;
             });
+        }
 
+        private static void SetupEmailSenderActor(IServiceCollection services)
+        {
             services.AddSingleton<EmailSenderActorProvider>(provider =>
             {
                 var actorSystem = provider.GetService<ActorSystem>();
@@ -72,14 +109,17 @@ namespace Postmark.Interview
 
                 return () => emailActor;
             });
+        }
 
+        private static void SetupBussinessLogicActor(IServiceCollection services)
+        {
             services.AddSingleton<BussinessLogicActorProvider>(provider =>
             {
                 var actorSystem = provider.GetService<ActorSystem>();
 
                 var emailSenderActor = provider.GetService<EmailSenderActorProvider>()();
                 var persistentStorageActor = provider.GetService<PersistentStorageActorProvider>()();
-               
+
                 var unsubscribeRule = new UnsubscribeRule();
                 var validateToEmailAddressRule = new ValidateToEmailAddressRule();
 
@@ -103,21 +143,6 @@ namespace Postmark.Interview
                       rulesEvaluator
                     ),
                     nameof(BussinessLogicActor)
-                );
-
-                return () => actor;
-            });
-
-            services.AddSingleton<ApiListenerActorProvider>(provider =>
-            {
-                var actorSystem = provider.GetService<ActorSystem>();
-
-                var bussinessLogicActor = provider.GetService<BussinessLogicActorProvider>()();
-                                                     
-                var actor = actorSystem.ActorOf
-                (
-                    ApiListenerActor.Create(BussinessLogicActor:bussinessLogicActor),
-                    nameof(ApiListenerActor)
                 );
 
                 return () => actor;

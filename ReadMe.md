@@ -18,7 +18,7 @@ Architecture
 
 ## Demo
 Coming soon
-```
+
 ### Development
 Want to contribute? Great!
 
@@ -33,6 +33,8 @@ To fix a bug or enhance an existing module, follow these steps:
 - Commit your changes (`git commit -am 'Improve feature'`)
 - Push to the branch (`git push origin improve-feature`)
 - Create a Pull Request 
+
+
 
 ## Notes on the Code organization.
 
@@ -58,6 +60,58 @@ A note on tests...there are 2 kinds of test projects in the repo.
 - Integration tests test the behavior of an actor given actual real-world dependencies.
 
 Don't mix the 2 up by putting unit tests in the integration tests project or vice versa
+
+## Adding Bussiness Rules
+To add bussiness rules, all thats needed is to implement the IEmailBussinessRule Interface
+and put the logic in the RunRuleCheck Method. Remember to cater for both types of requests that 
+can be sent. Also...remember that the SingleEmailRequest expects a SingleEmailResult while the 
+BulkEmailRequest expects the BulkEmailResult.
+e.g
+
+```
+public EmailResult RunRuleChecks(ref EmailRequest obj)
+{
+    EmailResult ruleEvaluationResult = null;
+
+    switch (obj)
+    {
+        case SingleEmail singleEmail:
+            ruleEvaluationResult = RunRuleOnSingleEmail(singleEmail);
+            break;
+
+        case BulkEmail bulkEmail:
+            ruleEvaluationResult = RunRuleOnBulkEmail(bulkEmail);
+            break;
+
+    }
+
+    return ruleEvaluationResult;
+}
+
+```
+Once you have implemented the Interface, make sure your Rule is added on App Startup. To do that
+add it to the SetupBussinessLogicActor in the StartUp.cs file in the Postmark.WebAPI project
+
+##Scaling Out
+Akka allows for scaling out of individual parts of your program at runtime by configuration.
+With Akka.net you can easily do something like this
+
+```
+var actor = actorSystem.ActorOf
+(
+    BussinessLogicActor.Create
+    (
+      emailSendingActor: emailSenderActor,
+      failedEmailsActor: persistentStorageActor,
+      rulesEvaluator
+    ).WithRouter(new RoundRobinPool(100),
+    nameof(BussinessLogicActor)
+);
+
+```
+
+Beyond that, the project is written to be easily deployed on AWS Lambda which supports infinte
+scalability
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
