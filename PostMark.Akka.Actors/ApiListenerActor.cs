@@ -7,14 +7,13 @@ namespace PostMark.Akka.Actors
 {
     public class ApiListenerActor : BaseActor
     {
-        private readonly IActorRef _apiValidationActor;
         private readonly IActorRef _bussinessLogicActor;
 
-        public ApiListenerActor(IActorRef apiValidationActor, IActorRef BussinessLogicActor)
+        public ApiListenerActor(IActorRef BussinessLogicActor)
         {
-            _apiValidationActor = apiValidationActor;
             _bussinessLogicActor = BussinessLogicActor;
         }
+
         protected override void OnReceive(object message)
         {
             switch (message)
@@ -33,26 +32,14 @@ namespace PostMark.Akka.Actors
                     break;
             }
         }
-        private async Task<OpResult> ProcessEmailRequest(EmailRequest request)
+        private async Task<EmailResult> ProcessEmailRequest(EmailRequest request)
         {
-            var validateCmd = new ApiValidationActor.ValidateEmailRequestCmd
-            {
-                EmailRequest = request
-            };
-
-            var validationResult = await _apiValidationActor.Ask<OpResult>(validateCmd);
-
-            if (validationResult.ResultCode != OpResultCode.SUCCCESS)
-            {
-                return validationResult;
-            }
-
             var sendBasedOnBussinessRules = new BussinessLogicActor.ApplyBussinessRulesCmd
             {
                 EmailRequest = request
             };
 
-            var bussinessRulesResult = await _bussinessLogicActor.Ask<OpResult>(sendBasedOnBussinessRules);
+            var bussinessRulesResult = await _bussinessLogicActor.Ask<EmailResult>(sendBasedOnBussinessRules);
 
             return bussinessRulesResult;
         }
