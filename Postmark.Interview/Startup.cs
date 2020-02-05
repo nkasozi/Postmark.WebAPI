@@ -1,4 +1,5 @@
 using Akka.Actor;
+using Akka.Routing;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -60,7 +61,8 @@ namespace Postmark.Interview
 
                 var actor = actorSystem.ActorOf
                 (
-                    ApiListenerActor.Create(BussinessLogicActor: bussinessLogicActor),
+                    ApiListenerActor.Create(BussinessLogicActor: bussinessLogicActor)
+                    .WithRouter(new RoundRobinPool(2)),
                     nameof(ApiListenerActor)
                 );
 
@@ -79,7 +81,7 @@ namespace Postmark.Interview
                     PersistentStorageActor.Create
                     (
                        new RedisStorage()
-                    ),
+                    ).WithRouter(new RoundRobinPool(2)),
                     nameof(PersistentStorageActor)
                 ); ;
                 return () => actor;
@@ -103,7 +105,7 @@ namespace Postmark.Interview
                       smtpClient,
                       failedEmailsActor: persistentStorageActor,
                       PersistentStorageActor: persistentStorageActor
-                    ),
+                    ).WithRouter(new RoundRobinPool(5)),
                     nameof(EmailNotiificationActor)
                 );
 
@@ -141,7 +143,7 @@ namespace Postmark.Interview
                       emailSendingActor: emailSenderActor,
                       failedEmailsActor: persistentStorageActor,
                       rulesEvaluator
-                    ),
+                    ).WithRouter(new RoundRobinPool(5)),
                     nameof(BussinessLogicActor)
                 );
 

@@ -96,7 +96,7 @@ public EmailResult RunRuleChecks(ref EmailRequest obj)
 Once you have implemented the Interface, make sure your Rule is added on App Startup. To do that
 add it to the SetupBussinessLogicActor in the StartUp.cs file in the Postmark.WebAPI project
 
-## Scaling Out
+## Scaling Out, High Avaiability Performance
 Akka allows for scaling out of individual parts of your program at runtime by configuration.
 With Akka.net you can easily do something like this
 
@@ -108,11 +108,17 @@ var actor = actorSystem.ActorOf
       emailSendingActor: emailSenderActor,
       failedEmailsActor: persistentStorageActor,
       rulesEvaluator
-    ).WithRouter(new RoundRobinPool(100),
+    ).WithRouter(new RoundRobinPool(100)),
     nameof(BussinessLogicActor)
 );
 
 ```
+This will create 100 instances of the BussinesslogicActor and akka will automatically loadbalance
+requests across all of them. This handles the Performance and Scaling out requirements
+
+Regarding High AVailability, Akka.Net automatically handles failures
+in actors based on a set stragey. by default, if an actor crashes, akka.net simply restarts it which
+helps meet the high availability requirements
 
 Beyond that, the project is written to be easily deployed on AWS Lambda which supports infinte
 scalability
