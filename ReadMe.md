@@ -50,8 +50,8 @@ Also akka allows you to make move your actors to other containers,vms,computers 
 and akka will work without any code changes
 
 Simply put
-- Actors go in core.Actors
-- Entities go in core.Entities 
+- Actors go in Postmark.Actors
+- Shared stuff goes in Postmark.Shared 
 - etc
 
 A note on tests...there are 2 kinds of test projects in the repo. 
@@ -96,7 +96,7 @@ public EmailResult RunRuleChecks(ref EmailRequest obj)
 Once you have implemented the Interface, make sure your Rule is added on App Startup. To do that
 add it to the SetupBussinessLogicActor in the StartUp.cs file in the Postmark.WebAPI project
 
-##Scaling Out
+## Scaling Out
 Akka allows for scaling out of individual parts of your program at runtime by configuration.
 With Akka.net you can easily do something like this
 
