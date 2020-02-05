@@ -8,7 +8,7 @@ Use git to download this repo and begin contributing
 
 ```bash
 git clone 
-https://WellCareAppRetro@dev.azure.com/WellCareAppRetro/WellCareAppMiddleware/_git/WellCareAppMiddleware
+https://github.com/nkasozi/Postmark.Interview.git
 ```
 
 Architecture 
