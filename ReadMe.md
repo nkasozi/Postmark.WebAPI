@@ -41,13 +41,10 @@ To fix a bug or enhance an existing module, follow these steps:
 The Backend Code relies heavily on Akka.net Actors. Akka is an opinionated framework that forces the developer to put any behavior or action-oriented code behind actors and the only way to invoke said actions is through the use of lightweight CQRs classes. 
 
 Advantages of Akka.Net
-It simplifies code organization and makes it easier to standardize and maintain code.
-Mentally its much easier to reason about code flows using actors than general mvc frameworks
-The biggest advantage Akka has is it enables the developer to scale out individual
-parts of the same program. for example you can scale out the bussinesslogic classes
-alone and leave the db handler alone without spliting up your code.Its just a configuration in Akka
-Also akka allows you to make move your actors to other containers,vms,computers etc
-and akka will work without any code changes
+- It simplifies code organization and makes it easier to standardize and maintain code.
+- Mentally its much easier to reason about code flows using actors than general mvc frameworks
+- The biggest advantage Akka has is it enables the developer to scale out individual parts of the same program. for example you can scale out the bussinesslogic classes alone and leave the db handler alone without spliting up your code.Its just a configuration in Akka
+- Also akka allows you to make move your actors to other containers,vms,computers etc and akka will make that work without any code changes
 
 Simply put
 - Actors go in Postmark.Actors
