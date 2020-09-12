@@ -8,7 +8,7 @@ Use git to download this repo and begin contributing
 
 ```bash
 git clone 
-https://github.com/nkasozi/Postmark.Interview.git
+https://github.com/nkasozi/Postmark.git
 ```
 
 Architecture 
