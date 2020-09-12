@@ -1,6 +1,6 @@
 # PostMark.WebAPI
 
-This Repo holds the code for the PostMark Interview. It's composed of a .net core Web API and Actors based on Akka.net. Subprojects have been created in order to create a cleaner design and make it easier for newcomers to understand the design and to reduce their time to first meaningful contributions
+This Repo holds the code for the PostMark WebAPI. It's composed of a .net core Web API and Actors based on Akka.net. Subprojects have been created in order to create a cleaner design and make it easier for newcomers to understand the design and to reduce their time to first meaningful contributions
 
 ## Installation
 
